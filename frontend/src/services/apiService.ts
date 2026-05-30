@@ -1,8 +1,7 @@
 import axios from "axios";
 import type { GroupStanding, Match } from "../types";
 
-const API_URL = ""; // same domain, no need to hardcode
-
+const API_URL = "/api"; // 👈 use Vite proxy instead of full URL
 const WC_START_MS = new Date("2026-06-11T00:00:00Z").getTime();
 const WC_END_MS = new Date("2026-07-20T00:00:00Z").getTime();
 
@@ -70,7 +69,7 @@ export async function fetchFixtures(): Promise<Match[]> {
       });
   } catch (err) {
     console.error("fetchFixtures failed:", err);
-    return [];
+    throw err;
   }
 }
 
@@ -87,6 +86,6 @@ export async function fetchStandings(): Promise<GroupStanding[]> {
     return mapStandings(res.data.standings);
   } catch (err) {
     console.error("fetchStandings failed:", err);
-    return [];
+    throw err;
   }
 }
