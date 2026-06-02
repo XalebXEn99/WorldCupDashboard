@@ -159,6 +159,10 @@ header p {
   color: #f8fafc;
 }
 
+:root[data-theme="light"] .match-up strong {
+  color: #1e293b;
+}
+
 .team-label,
 .team-label-row {
   display: inline-flex;
