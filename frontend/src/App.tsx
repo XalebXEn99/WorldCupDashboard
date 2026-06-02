@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import NextMatch from "./components/NextMatch";
 import LiveScore from "./components/LiveScore";
@@ -10,9 +10,19 @@ import PrizePage from "./components/PrizePage";
 import "./styles/styles.css";
 
 const App: React.FC = () => {
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    const saved = localStorage.getItem("theme");
+    return (saved as "dark" | "light") || "dark";
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.setAttribute("data-theme", theme);
+  }, [theme]);
+
   return (
     <div className="app-container">
-      <Header />
+      <Header theme={theme} setTheme={setTheme} />
       <NextMatch />
       <LiveScore />
       <GroupStage />
