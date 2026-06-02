@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({ theme, setTheme }) => {
       <div className="header-content">
         <div>
           <h1>World Cup 2026 Joseph Household Competition</h1>
-          <p>Quadrennial family showdown, winner takes R600!</p>
+          <p>Family football showdown, winner takes R600!</p>
         </div>
         <button 
           className="theme-toggle" 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { fetchStandings } from "../services/apiService";
-import VerticalLeaderboard from "./VerticalLeaderboard";
 import { teamOwners } from "../data/teamOwners";
 import type { GroupStanding } from "../types";
 
@@ -45,15 +44,43 @@ const PrizePage: React.FC = () => {
     load();
   }, []);
 
+  const owners = Array.from(new Set(Object.values(teamOwners))).sort();
+  const leadingPoints = owners.map(owner => points[owner] || 0);
+  const maxPoints = Math.max(1, ...leadingPoints);
+
+  if (!loaded) return (
+    <section className="section-card">
+      <div className="section-header">
+        <h2>Prize Race</h2>
+      </div>
+      <p>Loading prize race...</p>
+    </section>
+  );
+
   return (
-    <div>
-      <VerticalLeaderboard 
-        points={points} 
-        loaded={loaded} 
-        title="Prize Race" 
-        subtitle="Total prize: R600 (R100 from each of us). Winner's team owner takes it all!"
-      />
-    </div>
+    <section className="section-card">
+      <div className="section-header">
+        <h2>Prize Race</h2>
+      </div>
+      <p>Total prize: R600 (R100 from each of us). Winner's team owner takes it all!</p>
+      <div className="leaderboard-list">
+        {owners.map((owner, idx) => {
+          const pts = points[owner] || 0;
+          return (
+            <div key={idx} className="leaderboard-row">
+              <span>{owner}</span>
+              <div className="leaderboard-bar-bg">
+                <div className="leaderboard-bar-fill prize-bar" style={{ width: `${(pts / maxPoints) * 100}%` }} />
+              </div>
+              <span>{pts} pts</span>
+            </div>
+          );
+        })}
+      </div>
+      {!Object.values(points).some(value => value > 0) && (
+        <p style={{ marginTop: 16, color: '#94a3b8' }}>No points scored yet. The World Cup has not started.</p>
+      )}
+    </section>
   );
 };
 
