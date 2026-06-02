@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { GroupStanding, Match } from "../types";
 
-const API_URL = "/api"; // 👈 use Vite proxy instead of full URL
+const API_URL = "/api";
 const WC_START_MS = new Date("2026-06-11T00:00:00Z").getTime();
 const WC_END_MS = new Date("2026-07-20T00:00:00Z").getTime();
 
@@ -59,11 +59,11 @@ export async function fetchFixtures(): Promise<Match[]> {
     if (!res.data.matches) {
       return [];
     }
-    console.log("Raw fixtures response:", res.data);
+    console.log("Fetched fixtures:", res.data.matches.length, "matches");
 
     return res.data.matches
       .map(mapMatch)
-      .filter(match => {
+      .filter((match: Match) => {
         const dateMs = new Date(match.utcDate).getTime();
         return dateMs >= WC_START_MS && dateMs < WC_END_MS;
       });
@@ -81,7 +81,7 @@ export async function fetchStandings(): Promise<GroupStanding[]> {
       return [];
     }
 
-    console.log("Raw standings response:", res.data);
+    console.log("Fetched standings for", res.data.standings.length, "groups");
 
     return mapStandings(res.data.standings);
   } catch (err) {

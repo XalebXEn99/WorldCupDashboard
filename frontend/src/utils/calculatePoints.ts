@@ -3,7 +3,7 @@ import { teamOwners } from "../data/teamOwners";
 interface Match {
   homeTeam: { name: string };
   awayTeam: { name: string };
-  score: { fullTime: { home: number; away: number } };
+  score: { fullTime: { home: number | null; away: number | null } };
   status: string;
 }
 

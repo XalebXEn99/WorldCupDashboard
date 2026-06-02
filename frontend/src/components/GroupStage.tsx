@@ -8,34 +8,33 @@ const GroupStage: React.FC = () => {
   const [groups, setGroups] = useState<GroupStanding[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-useEffect(() => {
-  let isMounted = true;
+  useEffect(() => {
+    let isMounted = true;
 
-  async function load() {
-    try {
-      const [fixturesData, standingsData] = await Promise.all([
-        fetchFixtures(),
-        fetchStandings()
-      ]);
-      if (isMounted) {
-        setFixtures(fixturesData);
-        setGroups(standingsData);
+    async function load() {
+      try {
+        const [fixturesData, standingsData] = await Promise.all([
+          fetchFixtures(),
+          fetchStandings()
+        ]);
+        if (isMounted) {
+          setFixtures(fixturesData);
+          setGroups(standingsData);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      if (isMounted) setIsLoading(false);
     }
-  }
 
-  load();
-  const interval = setInterval(load, 120000); // refresh every 2 minutes
-  return () => {
-    isMounted = false;
-    clearInterval(interval);
-  };
-}, []);
-
+    load();
+    const interval = setInterval(load, 120000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   const groupMatches = useMemo(() => {
     const groupsMap: Record<string, Match[]> = {};
@@ -49,7 +48,10 @@ useEffect(() => {
 
     return Object.entries(groupsMap)
       .sort((a, b) => a[0].localeCompare(b[0]))
-      .map(([group, matches]) => ({ group, matches: matches.sort((a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime()) }));
+      .map(([group, matches]) => ({
+        group,
+        matches: matches.sort((a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime())
+      }));
   }, [fixtures]);
 
   const handleViewResults = () => {
@@ -119,29 +121,29 @@ useEffect(() => {
                     </tr>
                   </thead>
                   <tbody>
-                    {group.table.map((team, i) => (
+                    {group.table.map((row, i) => (
                       <tr key={i}>
-                        <td>{team.position}</td>
+                        <td>{row.position}</td>
                         <td>
-                          <div className="team-label-row">
-                            <span>{team.team.name}</span>
-                            <span className="owner-chip">{getOwner(team.team.name)}</span>
+                          <div className="team-label">
+                            <span>{row.team.name}</span>
+                            <span className="owner-chip">{getOwner(row.team.name)}</span>
                           </div>
                         </td>
-                        <td>{team.won}</td>
-                        <td>{team.draw}</td>
-                        <td>{team.lost}</td>
-                        <td>{team.goalsFor ?? 0}</td>
-                        <td>{team.goalsAgainst ?? 0}</td>
-                        <td>{team.goalDifference}</td>
-                        <td>{team.points}</td>
+                        <td>{row.won}</td>
+                        <td>{row.draw}</td>
+                        <td>{row.lost}</td>
+                        <td>{row.goalsFor}</td>
+                        <td>{row.goalsAgainst}</td>
+                        <td>{row.goalDifference}</td>
+                        <td><strong>{row.points}</strong></td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
             )) : (
-              <p>Standings data will appear once results begin.</p>
+              <p className="table-placeholder">Standings will be available soon.</p>
             )}
           </div>
         </>

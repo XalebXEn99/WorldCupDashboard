@@ -19,7 +19,7 @@ const Knockouts: React.FC = () => {
     async function load() {
       try {
         const fixtures = await fetchFixtures();
-        const filtered = fixtures.filter(match => 
+        const filtered = fixtures.filter(match =>
           stageOrder.includes(match.stage) &&
           match.homeTeam.name !== "TBD" &&
           match.awayTeam.name !== "TBD"

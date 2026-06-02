@@ -1,0 +1,12 @@
+{
+  "name": "worldcup-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "World Cup 2026 Joseph Household Competition",
+  "scripts": {
+    "start": "cd server && npm install && node index.js",
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm install && npm run build",
+    "prebuild": "cd .. && cd frontend && npm install && npm run build && cd ../server && npm install"
+  }
+}

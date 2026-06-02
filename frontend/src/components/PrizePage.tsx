@@ -41,7 +41,7 @@ const PrizePage: React.FC = () => {
       <div className="section-header">
         <h2>Prize Race</h2>
       </div>
-      <p>Total prize: R600 (R100 each). Winner’s team owner takes it all!</p>
+      <p>Total prize: R600 (R100 each). Winner's team owner takes it all!</p>
       <div className="leaderboard-list">
         {owners.map((owner, idx) => {
           const pts = points[owner] || 0;
@@ -57,7 +57,7 @@ const PrizePage: React.FC = () => {
         })}
       </div>
       {!Object.values(points).some(value => value > 0) && (
-        <p style={{ marginTop: 16, color: '#94a3b8' }}>The prize race will start once matches begin.</p>
+        <p style={{ marginTop: 16, color: '#94a3b8' }}>No points scored yet. The World Cup has not started.</p>
       )}
     </section>
   );

@@ -24,7 +24,8 @@ const LiveScore: React.FC = () => {
     }
     load();
 
-    const interval = setInterval(load, 30000);
+    // Update every 3 minutes
+    const interval = setInterval(load, 180000);
     return () => clearInterval(interval);
   }, []);
 
@@ -46,8 +47,8 @@ const LiveScore: React.FC = () => {
     </section>
   );
 
-  const homeScore = liveMatch.score.fullTime.home ?? 0;
-  const awayScore = liveMatch.score.fullTime.away ?? 0;
+  const homeScore = liveMatch!.score.fullTime.home ?? 0;
+  const awayScore = liveMatch!.score.fullTime.away ?? 0;
 
   return (
     <section className="section-card">
@@ -57,21 +58,21 @@ const LiveScore: React.FC = () => {
       <div className="score-card">
         <div className="match-up">
           <div className="team-label">
-            <span>{liveMatch.homeTeam.name}</span>
-            <span className="owner-chip">{getOwner(liveMatch.homeTeam.name)}</span>
+            <span>{liveMatch!.homeTeam.name}</span>
+            <span className="owner-chip">{getOwner(liveMatch!.homeTeam.name)}</span>
           </div>
           <strong>{homeScore} - {awayScore}</strong>
           <div className="team-label">
-            <span>{liveMatch.awayTeam.name}</span>
-            <span className="owner-chip">{getOwner(liveMatch.awayTeam.name)}</span>
+            <span>{liveMatch!.awayTeam.name}</span>
+            <span className="owner-chip">{getOwner(liveMatch!.awayTeam.name)}</span>
           </div>
         </div>
         <div className="match-meta">
-          <span>{liveMatch.status}</span>
-          <span>{liveMatch.score.duration || "In play"}</span>
+          <span>{liveMatch!.status}</span>
+          <span>{liveMatch!.score.duration || "In play"}</span>
         </div>
         <div className="match-meta">
-          <span>Half-time: {liveMatch.score.halfTime?.home ?? 0}-{liveMatch.score.halfTime?.away ?? 0}</span>
+          <span>Half-time: {liveMatch!.score.halfTime?.home ?? 0}-{liveMatch!.score.halfTime?.away ?? 0}</span>
         </div>
       </div>
     </section>

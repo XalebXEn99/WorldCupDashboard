@@ -63,8 +63,23 @@ const NextMatch: React.FC = () => {
     });
   }, [nextMatch]);
 
-  if (!loaded) return <p>Loading next match...</p>;
-  if (loaded && !nextMatch) return <p>Next match data is unavailable.</p>;
+  if (!loaded) return (
+    <section className="section-card">
+      <div className="section-header">
+        <h2>Next Match</h2>
+      </div>
+      <p>Loading next match...</p>
+    </section>
+  );
+
+  if (loaded && !nextMatch) return (
+    <section className="section-card">
+      <div className="section-header">
+        <h2>Next Match</h2>
+      </div>
+      <p>No upcoming matches scheduled yet.</p>
+    </section>
+  );
 
   return (
     <section className="section-card">
@@ -74,18 +89,21 @@ const NextMatch: React.FC = () => {
       <div className="score-card">
         <div className="match-up">
           <div className="team-label">
-            <span>{nextMatch.homeTeam.name}</span>
-            <span className="owner-chip">{getOwner(nextMatch.homeTeam.name)}</span>
+            <span>{nextMatch!.homeTeam.name}</span>
+            <span className="owner-chip">{getOwner(nextMatch!.homeTeam.name)}</span>
           </div>
           <strong>vs</strong>
           <div className="team-label">
-            <span>{nextMatch.awayTeam.name}</span>
-            <span className="owner-chip">{getOwner(nextMatch.awayTeam.name)}</span>
+            <span>{nextMatch!.awayTeam.name}</span>
+            <span className="owner-chip">{getOwner(nextMatch!.awayTeam.name)}</span>
           </div>
         </div>
         <div className="match-meta">
           <span>{displayDate}</span>
-          <span>{timeLeft}</span>
+          <span>{nextMatch!.stage.replace(/_/g, " ")}</span>
+        </div>
+        <div className="match-meta">
+          <strong>Kickoff in: {timeLeft}</strong>
         </div>
       </div>
     </section>
