@@ -1,7 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { fetchFixtures } from "../services/apiService";
-import { calculatePoints } from "../utils/calculatePoints";
+import { fetchStandings } from "../services/apiService";
 import { teamOwners } from "../data/teamOwners";
+import type { GroupStanding } from "../types";
+
+function calculatePointsFromStandings(standings: GroupStanding[]): Record<string, number> {
+  const points: Record<string, number> = {};
+
+  // Initialize all owners with 0
+  Object.values(teamOwners).forEach(owner => {
+    points[owner] = 0;
+  });
+
+  // Sum points from all groups' standings
+  standings.forEach(group => {
+    group.table.forEach(row => {
+      const owner = teamOwners[row.team.name];
+      if (owner) {
+        points[owner] = (points[owner] || 0) + row.points;
+      }
+    });
+  });
+
+  return points;
+}
 
 const Leaderboard: React.FC = () => {
   const [points, setPoints] = useState<Record<string, number>>({});
@@ -10,8 +31,8 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
     async function load() {
       try {
-        const fixtures = await fetchFixtures();
-        const calculated = calculatePoints(fixtures);
+        const standings = await fetchStandings();
+        const calculated = calculatePointsFromStandings(standings);
         setPoints(calculated);
       } catch (error) {
         console.error(error);

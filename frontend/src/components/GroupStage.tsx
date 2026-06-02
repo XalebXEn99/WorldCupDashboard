@@ -54,8 +54,8 @@ const GroupStage: React.FC = () => {
       }));
   }, [fixtures]);
 
-  const handleViewResults = () => {
-    document.getElementById("group-standings")?.scrollIntoView({ behavior: "smooth" });
+  const handleViewResults = (groupName: string) => {
+    document.getElementById(`standings-${groupName}`)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -71,7 +71,7 @@ const GroupStage: React.FC = () => {
             <div key={group} className="group-block">
               <div className="section-header" style={{ padding: 0, marginBottom: 14 }}>
                 <h3>{group}</h3>
-                <button className="primary-button" type="button" onClick={handleViewResults}>
+                <button className="primary-button" type="button" onClick={() => handleViewResults(group)}>
                   View results
                 </button>
               </div>
@@ -90,8 +90,11 @@ const GroupStage: React.FC = () => {
                       </div>
                     </div>
                     <div className="match-card-meta">
-                      <span>{new Date(match.utcDate).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true })}</span>
-                      <span>{match.status.replace("TIMED", "Scheduled")}</span>
+                      <span>
+                        {new Date(match.utcDate).toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true })}
+                        {" "}
+                        <span style={{ color: "#10b981" }}>{match.status.replace("TIMED", "Scheduled")}</span>
+                      </span>
                     </div>
                   </article>
                 ))}
@@ -104,7 +107,7 @@ const GroupStage: React.FC = () => {
           <div id="group-standings" className="standings-section">
             <h3>Group Standings</h3>
             {groups.length ? groups.map((group, idx) => (
-              <div key={idx} className="standings-card">
+              <div key={idx} id={`standings-${group.group}`} className="standings-card">
                 <h4>{group.group}</h4>
                 <table>
                   <thead>
